@@ -634,7 +634,14 @@ impl Backend for TerminaBackend {
                 )
             )
         } else {
-            self.reset_background_color()
+            // No theme background means that the terminal owns the background.
+            // Release any OSC 11 override instead of restoring the color resolved
+            // at startup, which may have come from an adaptive terminal theme.
+            write!(
+                self.terminal,
+                "{}",
+                Osc::ResetDynamicColor(osc::DynamicColorNumber::TextBackgroundColor)
+            )
         }
     }
 }
