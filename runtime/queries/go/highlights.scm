@@ -31,6 +31,17 @@
   function: (selector_expression
     field: (field_identifier) @function.method))
 
+; A single bare type argument can parse as an index expression. Local
+; variable bindings still take precedence for ordinary indexed function calls.
+(call_expression
+  function: (index_expression
+    operand: [
+      (identifier) @function
+      (selector_expression
+        field: (field_identifier) @function.method)
+    ]
+    index: (identifier) @type))
+
 (call_expression
   function: (identifier) @function.builtin
   (#match? @function.builtin "^(append|cap|close|complex|copy|delete|imag|len|make|new|panic|print|println|real|recover|min|max|clear)$"))
@@ -43,7 +54,12 @@
   (type_parameter_declaration
     name: (identifier) @type.parameter))
 
-((type_identifier) @type.builtin
+([
+  (type_identifier) @type.builtin
+  (call_expression
+    function: (index_expression
+      index: (identifier) @type.builtin))
+]
   (#match? @type.builtin "^(any|bool|byte|comparable|complex128|complex64|error|float32|float64|int|int16|int32|int64|int8|rune|string|uint|uint16|uint32|uint64|uint8|uintptr)$"))
 
 ; Type definition names: `type Foo struct{}`, `type Bar = Baz`.

@@ -20,6 +20,12 @@ Updated languages and queries:
 Packaging:
 -->
 
+# Unreleased
+
+Updated languages and queries:
+
+* Fix Go function and type highlighting for generic calls parsed as indexed expressions.
+
 # 25.07.1 (2025-07-18)
 
 This is a patch release which lowers the GLIBC requirements of the release artifacts published to GitHub ([#13983](https://github.com/helix-editor/helix/pull/13983))
